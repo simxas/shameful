@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>front-end-quiz</title>
+  <link rel="stylesheet" type="text/css" href="css/mystyle.css">
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+</head>
+<body>
+
+<div class="page"></div>
+<script id="formTemplate" type="text/template">
+
+    <form method="post" action="/post">
+
+    Title:</br >
+      <input type="text" name="title" placeholder="<%= itemWithData.title %>">
+    </br ></br >
+
+    Description:</br >
+      <textarea name="description" form="usrform" placeholder="<%= itemWithData.description %>"></textarea>
+    </br ></br >
+
+    internal notes:</br >
+      <input type="text" name="internalNotes" placeholder="<%= itemWithData.dealerInternalNotes %>">
+    </br ></br >
+
+    <% if(enumsWithData != null) { %>
+
+    Materials:</br >
+      <select name="selectMaterial">
+        <option value="disabled selected">Select your option</option>
+
+        <% _.each(enumsWithData.material, function(material) { %>
+          <option value="<%= material %>"><%= material %></option>
+        <% }); %>
+      </select>
+    </br ></br >
+
+     <input type="checkbox" name="restricted" value="restricted">Check this box if the listing contains or may contain restricted materials
+    </br ></br >
+
+    <h3>Measurements</h3>
+
+      Measurements are in: 
+      <input id="inches" type="radio" name="inches" value="inches" checked="checked"><%= enumsWithData.measurement.unit.in %>
+      <input id="centimeters" type="radio" name="centimeters" value="centimeters"><%= enumsWithData.measurement.unit.cm %><br>
+
+      Measured item is:
+        <div id="shape"> 
+        <input id="rectangular" type="radio" name="rectangular" value="Rectangular"><%= enumsWithData.measurement.shape[0] %>
+        <input id="circular" type="radio" name="circular" value="Circular"><%= enumsWithData.measurement.shape[1] %><br>
+        </div>
+    </br ></br >
+ 
+      Length:</br ><input class="measurements" type="number" name="length" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+      Depth:</br ><input class="measurements" type="number" name="depth" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+      Height:</br ><input class="measurements" type="number" name="height" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+      Diameter:</br ><input class="diameter" type="number" name="diameter" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+
+    </br ></br >
+
+    Condition (Select one)</br>
+    <input type="radio" name="distressed" value="Distressed"><%= enumsWithData.condition.description[0] %><br>
+    <input type="radio" name="fair" value="Fair"><%= enumsWithData.condition.description[1] %><br>
+    <input type="radio" name="good" value="Good"><%= enumsWithData.condition.description[2] %><br>
+    <input type="radio" name="excellent" value="Excellent"><%= enumsWithData.condition.description[3] %><br>
+   
+
+    <% } %><!--end of if-->
+    <input type="submit" value="Save">
+  </form>
+<script type="text/javascript" src="js/utils.js"></script>
+
+</script>
+
+<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+</body>
+</html>
