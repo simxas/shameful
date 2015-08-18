@@ -1,19 +1,18 @@
-$('input[type="radio"]').mousedown(function() { 
-    if(this.checked) {
-        $(this).mouseup(function() {  
-            var radio = this;
-            setTimeout(function() { 
-                radio.checked = false; 
-            }, 5); 
-            $(this).unbind('mouseup');
-        });
-    }
+//radio checked one at the time
+$('.radio').on('change', function(){
+    $('.radio').not(this).prop('checked', false);
+});
+$('.mradio').on('change', function(){
+    $('.mradio').not(this).prop('checked', false);
+});
+$('.cradio').on('change', function(){
+    $('.cradio').not(this).prop('checked', false);
 });
 
-$('input[type=radio]').on('change', function(){
-    $('input[type=radio]').not(this).prop('checked', false);
-});
 
+//=====================
+// for disabled inputs
+//=====================
 $( "#rectangular" ).click(function() {
   $('.measurements').prop('disabled', false);
   $('.diameter').prop('disabled', true);
@@ -29,3 +28,4 @@ $( "#centimeters" ).click(function() {
 $( "#inches" ).click(function() {
 	$('.unit').html('inches');
 });
+

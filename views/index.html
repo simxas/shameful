@@ -1,78 +1,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>front-end-quiz</title>
+  <title>front-end-quiz</title>
   <link rel="stylesheet" type="text/css" href="css/mystyle.css">
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 </head>
 <body>
 
 <div class="page"></div>
+
+<!-- underscorejs template -->
 <script id="formTemplate" type="text/template">
 
-    <form method="post" action="/post">
+<% var info = item.attributes.result.item; %>
 
-    Title:</br >
-      <input type="text" name="title" placeholder="<%= itemWithData.title %>">
-    </br ></br >
+<form class="form">
+<!-- first part -->
+Title:<br>
+<input type="text" name="title" placeholder="<%= info.title %>">
+<br>
+Description:</br >
+<textarea name="description" placeholder="<%= info.description %>"></textarea>
+</br ></br >
+internal notes:</br >
+  <textarea name="dealerInternalNotes" placeholder="<%= info.dealerInternalNotes %>"></textarea>
+</br ></br >
+<!-- ===================================================================== -->
+<!-- second part -->
+Materials:</br >
+<select name="material">
+  <option value="disabled selected">Select your option</option>
 
-    Description:</br >
-      <textarea name="description" form="usrform" placeholder="<%= itemWithData.description %>"></textarea>
-    </br ></br >
+  <% _.each(enums.material, function(material) { %>
+    <option value="<%= material %>"><%= material %></option>
+  <% }); %>
+</select>
+</br ></br >
+<input type="checkbox" name="restricted" value="restricted">Check this box if the listing contains or may contain restricted materials
+</br ></br >
+<!-- ===================================================================== -->
+<!-- third part -->
+<h3>Measurements</h3>
 
-    internal notes:</br >
-      <input type="text" name="internalNotes" placeholder="<%= itemWithData.dealerInternalNotes %>">
-    </br ></br >
+Measurements are in: 
+<input class="mradio" id="inches" type="radio" name="unit" value="inches" checked="checked"><%= enums.measurement.unit.in %>
+<input class="mradio" id="centimeters" type="radio" name="unit" value="centimeters"><%= enums.measurement.unit.cm %><br>
 
-    <% if(enumsWithData != null) { %>
+Measured item is:
+<input class="radio" id="rectangular" type="radio" name="shape" value="Rectangular"><%= enums.measurement.shape[0] %>
+<input class="radio" id="circular" type="radio" name="shape" value="Circular"><%= enums.measurement.shape[1] %><br>
+</br ></br >
 
-    Materials:</br >
-      <select name="selectMaterial">
-        <option value="disabled selected">Select your option</option>
+Length:</br ><input class="measurements" type="number" name="length" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+Depth:</br ><input class="measurements" type="number" name="depth" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+Height:</br ><input class="measurements" type="number" name="height" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+Diameter:</br ><input class="diameter" type="number" name="diameter" placeholder="Enter number" disabled><span class="unit">inches</span></br>
 
-        <% _.each(enumsWithData.material, function(material) { %>
-          <option value="<%= material %>"><%= material %></option>
-        <% }); %>
-      </select>
-    </br ></br >
+</br ></br >
+<!-- ===================================================================== -->
+<!-- last part -->
+Condition (Select one)</br>
+<input class="cradio" type="radio" name="condition" value="Distressed"><%= enums.condition.description[0] %><br>
+<input class="cradio" type="radio" name="condition" value="Fair"><%= enums.condition.description[1] %><br>
+<input class="cradio" type="radio" name="condition" value="Good"><%= enums.condition.description[2] %><br>
+<input class="cradio" type="radio" name="condition" value="Excellent"><%= enums.condition.description[3] %><br>
 
-     <input type="checkbox" name="restricted" value="restricted">Check this box if the listing contains or may contain restricted materials
-    </br ></br >
 
-    <h3>Measurements</h3>
+<input type="submit" value="Submit">
+</form>
 
-      Measurements are in: 
-      <input id="inches" type="radio" name="inches" value="inches" checked="checked"><%= enumsWithData.measurement.unit.in %>
-      <input id="centimeters" type="radio" name="centimeters" value="centimeters"><%= enumsWithData.measurement.unit.cm %><br>
-
-      Measured item is:
-        <div id="shape"> 
-        <input id="rectangular" type="radio" name="rectangular" value="Rectangular"><%= enumsWithData.measurement.shape[0] %>
-        <input id="circular" type="radio" name="circular" value="Circular"><%= enumsWithData.measurement.shape[1] %><br>
-        </div>
-    </br ></br >
- 
-      Length:</br ><input class="measurements" type="number" name="length" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-      Depth:</br ><input class="measurements" type="number" name="depth" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-      Height:</br ><input class="measurements" type="number" name="height" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-      Diameter:</br ><input class="diameter" type="number" name="diameter" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-
-    </br ></br >
-
-    Condition (Select one)</br>
-    <input type="radio" name="distressed" value="Distressed"><%= enumsWithData.condition.description[0] %><br>
-    <input type="radio" name="fair" value="Fair"><%= enumsWithData.condition.description[1] %><br>
-    <input type="radio" name="good" value="Good"><%= enumsWithData.condition.description[2] %><br>
-    <input type="radio" name="excellent" value="Excellent"><%= enumsWithData.condition.description[3] %><br>
-   
-
-    <% } %><!--end of if-->
-    <input type="submit" value="Save">
-  </form>
 <script type="text/javascript" src="js/utils.js"></script>
 
 </script>
+<!-- end of template -->
 
 <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
 <script type="text/javascript" src="bower_components/backbone/backbone.js"></script>

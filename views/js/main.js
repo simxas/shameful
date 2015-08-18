@@ -1,76 +1,103 @@
-var itemWithData;
-var enumsWithData;
-//====================================
+//my helpers====================================
+//jquery function to put form data in to object. 
+$.fn.serializeObject = function() {
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function() {
+      if (o[this.name] !== undefined) {
+          if (!o[this.name].push) {
+              o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || '');
+      } else {
+          o[this.name] = this.value || '';
+      }
+  });
+  return o;
+};
+
+/*
+getting enums.json with simple jquery function
+an adding to variable enums.
+*/
+var enums;
+$.getJSON("enums.json", function(result){
+        enums = result.itemEnums;
+});
+// ==============================================
+//===========
+//Models
+//===========
 var Item = Backbone.Model.extend({
-	defaults: {
+    url: '/item.json',
+    defaults: {
         id: 123,
-        title: "Lorem Ipsum",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        dealerInternalNotes: "none available",
+        title: "",
+        description: "",
+        dealerInternalNotes: "",
         material: {
-        	description: "Ceramic",
-            restricted: "N"
+            description: "",
+            restricted: ""
         },
         measurement: {
-			unit: "in",
-			shape: "",
-			length: "4.5",
-			depth: "4.5",
-			height: "12"
+            unit: "",
+            shape: "",
+            length: "",
+            depth: "",
+            height: "",
+            diameter: ""
         },
         condition: {
-            description: "Good"
+            description: ""
         }
     }
-
 });
+
 var item = new Item();
-item.url = '/item.json';
-var enums = new Item();
-enums.url = '/enums.json';
 
-
+//=========
+//Views
+//=========
 var FormView = Backbone.View.extend({
-	el: '.page',
-	initialize: function() {
-			this.template = _.template($('#formTemplate').html());
-			this.listenTo(this.model, 'change', this.render);
-	},
-	render: function() {
-		item.fetch({
-			success: function(data){
-			data.toJSON();
-			itemWithData = data.attributes.result.item;
-			var template = _.template($('#formTemplate').html(), {data:itemWithData});
-			$('.page').html(template());
-			}
-		});
-		enums.fetch({
-			success: function(data){
-			data.toJSON();
-			enumsWithData = data.attributes.itemEnums;
-			var template = _.template($('#formTemplate').html(), {data:enumsWithData});
-			$('.page').html(template());
-			}
-		});
-		
-	}//end of render
+    el: '.page',
+    render: function() {
+
+        var that = this;
+        item.fetch({
+            success: function(item) {
+                var result = item.attributes.result.item;
+                var template = _.template($("#formTemplate").html(), result);
+                that.$el.html(template);
+            }
+        });
+
+    },//end of render
+    events: {
+        'submit .form': 'saveInfo'
+    },
+    saveInfo: function(ev) {
+        var itemDetails = $(ev.currentTarget).serializeObject();
+        var newItem = new Item();
+        newItem.set(itemDetails);
+        console.log(newItem.attributes);
+        
+        return false;
+    }
 });
 
+
+//=============
+//Routes
+//=============
 var Router = Backbone.Router.extend({
-	routes: {
-		'': 'home'
-	}
+    routes: {
+        '': 'home'
+    }
 });
 
-var formView = new FormView();
 var router = new Router();
-
-
 router.on('route:home', function() {
-	formView.render();
-
-});//end of router on
-
-
+    var formView = new FormView();
+    formView.render();
+});
 Backbone.history.start();
