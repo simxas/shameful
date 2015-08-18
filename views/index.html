@@ -8,76 +8,80 @@
 </head>
 <body>
 
-<div class="page"></div>
+  <div class="page"></div>
 
-<!-- underscorejs template -->
-<script id="formTemplate" type="text/template">
+  <!-- formTemplate -->
+  <script id="formTemplate" type="text/template">
 
-<% var info = item.attributes.result.item; %>
+    <% var info = item.attributes.result.item; %>
 
-<form class="form">
-<!-- first part -->
-Title:<br>
-<input type="text" name="title" placeholder="<%= info.title %>">
-<br>
-Description:</br >
-<textarea name="description" placeholder="<%= info.description %>"></textarea>
-</br ></br >
-internal notes:</br >
-  <textarea name="dealerInternalNotes" placeholder="<%= info.dealerInternalNotes %>"></textarea>
-</br ></br >
-<!-- ===================================================================== -->
-<!-- second part -->
-Materials:</br >
-<select name="material">
-  <option value="disabled selected">Select your option</option>
+    <form class="form">
+    <!-- first part -->
+    Title:<br>
+    <input type="text" name="title" placeholder="<%= info.title %>">
+    <br>
+    Description:</br >
+    <textarea name="description" placeholder="<%= info.description %>"></textarea>
+    </br ></br >
+    internal notes:</br >
+      <textarea name="dealerInternalNotes" placeholder="<%= info.dealerInternalNotes %>"></textarea>
+    </br ></br >
 
-  <% _.each(enums.material, function(material) { %>
-    <option value="<%= material %>"><%= material %></option>
-  <% }); %>
-</select>
-</br ></br >
-<input type="checkbox" name="restricted" value="restricted">Check this box if the listing contains or may contain restricted materials
-</br ></br >
-<!-- ===================================================================== -->
-<!-- third part -->
-<h3>Measurements</h3>
+    <span id="secondPart"></span>
 
-Measurements are in: 
-<input class="mradio" id="inches" type="radio" name="unit" value="inches" checked="checked"><%= enums.measurement.unit.in %>
-<input class="mradio" id="centimeters" type="radio" name="unit" value="centimeters"><%= enums.measurement.unit.cm %><br>
+    <input type="submit" value="Submit">
+    </form>
 
-Measured item is:
-<input class="radio" id="rectangular" type="radio" name="shape" value="Rectangular"><%= enums.measurement.shape[0] %>
-<input class="radio" id="circular" type="radio" name="shape" value="Circular"><%= enums.measurement.shape[1] %><br>
-</br ></br >
+  </script>
+  <!-- end of formTemplate -->
 
-Length:</br ><input class="measurements" type="number" name="length" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-Depth:</br ><input class="measurements" type="number" name="depth" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-Height:</br ><input class="measurements" type="number" name="height" placeholder="Enter number" disabled><span class="unit">inches</span></br>
-Diameter:</br ><input class="diameter" type="number" name="diameter" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+  <!-- secondTemplate -->
+  <script id="secondTemplate" type="text/template">
 
-</br ></br >
-<!-- ===================================================================== -->
-<!-- last part -->
-Condition (Select one)</br>
-<input class="cradio" type="radio" name="condition" value="Distressed"><%= enums.condition.description[0] %><br>
-<input class="cradio" type="radio" name="condition" value="Fair"><%= enums.condition.description[1] %><br>
-<input class="cradio" type="radio" name="condition" value="Good"><%= enums.condition.description[2] %><br>
-<input class="cradio" type="radio" name="condition" value="Excellent"><%= enums.condition.description[3] %><br>
+    Materials:</br >
+    <select name="material">
+      <option value="disabled selected">Select your option</option>
 
+      <% _.each(enums.material, function(material) { %>
+        <option value="<%= material %>"><%= material %></option>
+      <% }); %>
+    </select>
+    </br ></br >
+    <input type="checkbox" name="restricted" value="restricted">Check this box if the listing contains or may contain restricted materials
+    </br ></br >
 
-<input type="submit" value="Submit">
-</form>
+    <h3>Measurements</h3>
 
-<script type="text/javascript" src="js/utils.js"></script>
+    Measurements are in: 
+    <input class="mradio" id="inches" type="radio" name="unit" value="inches" checked="checked"><%= enums.measurement.unit.in %>
+    <input class="mradio" id="centimeters" type="radio" name="unit" value="centimeters"><%= enums.measurement.unit.cm %><br>
 
-</script>
-<!-- end of template -->
+    Measured item is:
+    <input class="radio" id="rectangular" type="radio" name="shape" value="Rectangular"><%= enums.measurement.shape[0] %>
+    <input class="radio" id="circular" type="radio" name="shape" value="Circular"><%= enums.measurement.shape[1] %><br>
+    </br ></br >
 
-<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
-<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+    Length:</br ><input class="measurements" type="number" name="length" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+    Depth:</br ><input class="measurements" type="number" name="depth" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+    Height:</br ><input class="measurements" type="number" name="height" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+    Diameter:</br ><input class="diameter" type="number" name="diameter" placeholder="Enter number" disabled><span class="unit">inches</span></br>
+
+    </br ></br >
+
+    Condition (Select one)</br>
+    <input class="cradio" type="radio" name="condition" value="Distressed"><%= enums.condition.description[0] %><br>
+    <input class="cradio" type="radio" name="condition" value="Fair"><%= enums.condition.description[1] %><br>
+    <input class="cradio" type="radio" name="condition" value="Good"><%= enums.condition.description[2] %><br>
+    <input class="cradio" type="radio" name="condition" value="Excellent"><%= enums.condition.description[3] %><br>
+
+    <script type="text/javascript" src="js/utils.js"></script>
+
+  </script>
+  <!-- end of secondTemplate -->
+
+  <script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+  <script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
 
 </body>
 </html>

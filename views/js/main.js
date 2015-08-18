@@ -1,5 +1,7 @@
-//my helpers====================================
-//jquery function to put form data in to object. 
+// ====================
+// My helper functions
+//=====================
+//jquery function to serialize form data in to object. 
 $.fn.serializeObject = function() {
   var o = {};
   var a = this.serializeArray();
@@ -17,14 +19,19 @@ $.fn.serializeObject = function() {
 };
 
 /*
-getting enums.json with simple jquery function
-an adding to variable enums.
+getting enums.json with simple ajax function
+an adding file's content to variable enums.
 */
-var enums;
-$.getJSON("enums.json", function(result){
-        enums = result.itemEnums;
+var enums; 
+$.ajax({
+  url: 'enums.json',
+  async: false,
+  dataType: 'json',
+  success: function (response) {
+    enums = response.itemEnums;
+  }
 });
-// ==============================================
+
 //===========
 //Models
 //===========
@@ -68,6 +75,10 @@ var FormView = Backbone.View.extend({
                 var result = item.attributes.result.item;
                 var template = _.template($("#formTemplate").html(), result);
                 that.$el.html(template);
+                //appending second template to the first one as a child template
+                var second = new SecondPartView();
+                $('#secondPart', this.$el).append(second.$el);
+
             }
         });
 
@@ -85,6 +96,15 @@ var FormView = Backbone.View.extend({
     }
 });
 
+var SecondPartView = Backbone.View.extend({
+    initialize: function() {
+        this.render();
+    },
+    render: function() {
+        var template = _.template($("#secondTemplate").html());
+        this.$el.html(template);
+    }
+});
 
 //=============
 //Routes
